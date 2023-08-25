@@ -1,17 +1,17 @@
 .chessBoard {
   width: 100%;
   aspect-ratio: 1/1;
-  border: 2px solid red;
+   /*  */
 }
 .chessBoard #myBoard {
     width: 100%;
     aspect-ratio: 1/1;
-border: 2px solid red;
+ /*  */
 }
 
 #top,
 #bottom {
-    border: 2px solid red;
+     /*  */
     width: 100%;
     padding: 10px 20px;
 display: flex;
@@ -20,7 +20,7 @@ justify-content: space-between;
 
 .moves{
   display: flex;
-  border: 2px solid red;
+   /*  */
 
 }
 

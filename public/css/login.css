@@ -7,13 +7,13 @@ form{
     flex-direction: column;
     justify-content: center;
     align-items: start;
-    border: 2px solid red;
+    
 }
 
 form>*{
     margin: 5px 20px;
     padding: 10px;
-    /* border: 2px solid red; */
+    /*  */
 }
 
 form label{
@@ -22,7 +22,7 @@ form label{
     min-width: fit-content;
     width: 100px;
     margin-right:10px;
-    /* border: 2px solid red; */
+    /*  */
     padding: 5px;
 }
 form input{
