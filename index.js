@@ -52,7 +52,7 @@ PlayNamespace.on("connection", PlayIO);
 connectDB(process.env.MONGO_URI)
   .then(() => {
     console.log("Database connected");
-    server.listen(80, () => {
+    server.listen(3000, () => {
       console.log("listening on *:3000");
     });
   })
