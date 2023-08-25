@@ -7,7 +7,7 @@ const homePage = (req, res) => {
   let obj={user: req.user};
   console.log(obj)
   // base_URL="http://localhost:3000"
-
+console.log(process.env.base_URL)
   if(req.user)
   {
     fetch(`${process.env.base_URL}/api/v1/allgames/${req.user.userId}`).then(res=>res.json()).then(games=>{
