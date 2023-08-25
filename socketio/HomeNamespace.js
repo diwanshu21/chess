@@ -2,6 +2,9 @@ import { isObjectIdOrHexString } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 import Game from "../model/Game.js";
 import User from "../model/User.js";
+import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+dotenv.config();
+
 // uuidv4();
 
 let playRequest = {};
@@ -57,7 +60,7 @@ const HomeIO = (socket) => {
               { $push: { games: gameID } },
               { new: true }
             );
-            let url = "http://localhost:3000/play/" + gameID;
+            let url = `${process.env.base_URL}/play/` + gameID;
             console.log(url, user);
 
             socket.emit("startGame", url);
