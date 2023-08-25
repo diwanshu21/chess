@@ -1,0 +1,50 @@
+
+.main {
+  width: 100%;
+  height: fit-content;
+  height: 100vh;
+  position: relative;
+    display: flex;
+    align-items: start;
+    border: 2px solid red;
+    justify-content: center;
+    padding: 10% 0;
+}
+
+
+
+.main .content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border: 2px solid red;
+}
+
+.main .content >*{
+    font-size: 20px;
+    border: 2px solid blue;
+    padding: 10px 20px;
+    width: 200px;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.main .content a{
+    cursor: pointer;
+    color: white;
+    background-color: blue;
+}
+
+.main .games{
+    width: 100%;
+}
+
+.games table{
+    width: 100%;
+}
+
+.games table tr,th,td{
+    border: 2px solid blue;
+}

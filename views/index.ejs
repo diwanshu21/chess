@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/index.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <%- include('includes/header') %>
+
+    <div class="container">
+    
+      <section class="main">
+        <div class="content">
+
+          <% if(!user) {%>
+
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+        
+        <% } else { %>
+        
+        <h1><%= user.username %></h1>
+        <a type="button" class="btn">Play</a>
+        
+        <div class="games">
+          <table>
+            <tr>
+              <th>Sno.</th>
+              <th>Players</th>
+              <th>Result</th>
+            </tr>
+
+            <% for(let i=0;i<games.length;i++){ %>
+
+              <tr>
+                <td><%= i+1 %></td>
+                <td><a href="/play/<%= games[i]._id%>" target="_blank"><%= games[i].player1 %> VS <%= games[i].player2 %></a></td>
+                <td>
+                  <% if(games[i].result=='---' || games[i].result=='Draw'){ %>
+                  <%= games[i].result %>
+                  <% } else { %>
+                    <%= games[i].result %> won
+                    <% } %>
+                  
+                </td>
+              </tr>
+              <% } %>
+          </table>
+        </div>
+        <% }%>
+        </div>
+        
+      </section>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+      var socket = io("/");
+      socket.on("startGame", (url) => {
+        console.log("startgame");
+        location.href = url;
+      });
+    </script>
+    <script>
+      let btn = document.querySelector(".btn");
+
+      btn.addEventListener("click", (e) => {
+        console.log("click");
+        socket.emit("playrequest");
+      });
+    </script>
+  </body>
+</html>

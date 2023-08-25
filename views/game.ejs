@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin" />
+    <meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp" />
+
+    <title>Chessboard.js Example</title>
+
+    <link rel="stylesheet" href="/chessboard.css" />
+    <link rel="stylesheet" href="/css/game.css" />
+  </head>
+  <body>
+    <div class="container">
+      <%- include('includes/header') %>
+
+      <div class="chessBoard">
+        <div id="top">
+          <h1 class="username">Player 1</h1>
+          <h2 class="timer">Timer</h2>
+        </div>
+
+        <div id="myBoard"></div>
+        <div id="bottom">
+          <h1 class="username">Player 2</h1>
+          <h2 class="timer">Timer</h2>
+        </div>
+        <div class="moves">
+          <!-- <div class="col1"></div>
+          <div class="col2"></div> -->
+        </div>
+      </div>
+
+      <button type="button" class="btn">Flip</button>
+      <label>Status:</label>
+      <div id="status"></div>
+      <label>FEN:</label>
+      <div id="fen"></div>
+      <label>PGN:</label>
+      <div id="pgn"></div>
+      <script src="/socket.io/socket.io.js"></script>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="/chessboard.js"></script>
+      <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"
+        integrity="sha512-xRllwz2gdZciIB+AkEbeq+gVhX8VB8XsfqeFbUh+SzHlN96dEduwtTuVuc2u9EROlmW9+yhRlxjif66ORpsgVA=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+      ></script>
+      <script src="/game/index.umd.js" type="text/javascript"></script>
+
+      <script src="/game/chessGame.js"></script>
+      <script src="/game/moves.js"></script>
+      <script>
+        "use strict";
+        let path = location.pathname;
+
+        let pathArray = path.split("/");
+        let roomId = pathArray[2];
+        let btn = document.querySelector(".btn");
+
+        let totalTime = 1000 * 60 * 10;
+        let totalTimeTakenp1 = 0;
+        let totalTimeTakenp2 = 0;
+        let intervalTime = 100;
+
+        let topUser = document.querySelector("#top");
+        let bottomUser = document.querySelector("#bottom");
+        let p1username;
+        let p1timer;
+        let p2username;
+        let p2timer;
+
+        var socket = io("/play");
+
+        btn.addEventListener("click", flipBoard);
+
+        console.log(
+          msToTime(totalTime),
+          msToTime(totalTimeTakenp1),
+          msToTime(totalTimeTakenp2)
+        );
+
+        // console.log(totalTimeTakenp1, totalTimeTakenp2);
+
+        console.log(path);
+
+        console.log(socket);
+
+        socket.on("OpponentMoved", OpponentMoved);
+        socket.on("connect", connect);
+        socket.on("gameDetails", gameDetails);
+
+        function OpponentMoved({ move, newgame }) {
+          console.log(move, newgame);
+          turn = true;
+          console.log("Opponent moved", move);
+          let curmove = {
+            from: move.from,
+            to: move.to,
+            promotion: "q",
+          };
+          var move = game.move(curmove);
+          if (move == null) {
+            console.log("Error");
+          }
+
+          board.position(game.fen());
+          updateStatus();
+        }
+
+        function connect() {
+          console.log("Connected to server");
+
+          socket.emit("joinRoom", { roomId });
+        }
+
+        function gameDetails({ data, user }) {
+          console.log("Game details", data, user);
+          console.log(user == data.player1);
+
+          console.log({ game });
+          let config = {
+            draggable: true,
+            position: "start",
+            onDragStart: onDragStart,
+            onDrop: onDrop,
+            onSnapEnd: onSnapEnd,
+            pieceTheme:
+              "http://localhost:3000/img/chesspieces/wikipedia/{piece}.png",
+            orientation: "black",
+          };
+          console.log(config);
+          // console.log(myboard);
+          if (user == data.player1) {
+            config.orientation = "white";
+            topUser.classList.add("p2");
+            bottomUser.classList.add("p1");
+          } else if (user == data.player2) {
+            config.orientation = "black";
+
+            topUser.classList.add("p1");
+            bottomUser.classList.add("p2");
+          } else {
+            topUser.classList.add("p1");
+            bottomUser.classList.add("p2");
+
+            config.onDragStart = null;
+            config.onSnapEnd = null;
+            config.draggable = null;
+          }
+          console.log(config);
+
+          // console.log(Object.getOwnPropertyNames(game));
+          // console.log(data);
+
+          game.load_pgn(data.pgn);
+          console.log(data.pgn);
+          moves(data.pgn);
+
+          // const pgn = "1. e4 e5 2. Nf3 Nc6";
+          const parsedMoves = parsePGN(data.pgn);
+
+          console.log(parsedMoves);
+          // if (game.pgn() == data.pgn) {
+          //   console.log("coorect");
+          //   console.log(game.pgn());
+          //   console.log(data.pgn);
+          // } else {
+          // }
+          config.position = game.fen();
+          console.log(config.position);
+
+          totalTimeTakenp1 = data.timeByP1;
+          totalTimeTakenp2 = data.timeByP2;
+          let time = data.timeData;
+
+          if (game.turn() === "b") {
+            if (config.orientation == "black") {
+              turn = true;
+            } else {
+              turn = false;
+            }
+          } else {
+            if (config.orientation == "white") {
+              turn = true;
+            } else {
+              turn = false;
+            }
+          }
+
+          if (game.turn() === "w") {
+            if (time.length == 0) {
+              totalTimeTakenp1 += Date.now() - data.startDate;
+            } else {
+              let last = time[time.length - 1];
+              totalTimeTakenp1 += Date.now() - last.date;
+            }
+          } else {
+            if (time.length == 0) {
+              totalTimeTakenp2 += Date.now() - data.startDate;
+            } else {
+              let last = time[time.length - 1];
+              totalTimeTakenp2 += Date.now() - last.date;
+            }
+          }
+
+          totalTimeTakenp1 = Math.min(totalTimeTakenp1, totalTime);
+          totalTimeTakenp2 = Math.min(totalTimeTakenp2, totalTime);
+          p1username = data.player1;
+          p2username = data.player2;
+
+          document.querySelector(".p1 .username").textContent = p1username;
+          document.querySelector(".p2 .username").textContent = p2username;
+          startInterval();
+          board = Chessboard("myBoard", config);
+          moves(data.pgn);
+
+          updateStatus();
+        }
+
+        function msToTime(duration) {
+          var milliseconds = Math.floor((duration % 1000) / 100),
+            seconds = Math.floor((duration / 1000) % 60),
+            minutes = Math.floor((duration / (1000 * 60)) % 60),
+            hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+          hours = hours < 10 ? "0" + hours : hours;
+          minutes = minutes < 10 ? "0" + minutes : minutes;
+          seconds = seconds < 10 ? "0" + seconds : seconds;
+
+          let ans;
+          if (hours > 0) return hours + "h:" + minutes + "m";
+          else if (minutes > 0) return minutes + "m:" + seconds + "s";
+          else if (seconds > 0) return seconds + "s." + milliseconds + "ms";
+          else if (milliseconds > 0)
+            return seconds + "s." + milliseconds + "ms";
+          else {
+            $status.html("Game Over");
+            return "0s." + "0ms";
+          }
+        }
+        console.log(msToTime(300000));
+        function timer() {
+          // console.log(totalTimeTakenp1, totalTimeTakenp2);
+          if (game.turn() == "w") {
+            totalTimeTakenp1 += intervalTime;
+          }
+          if (game.turn() == "b") {
+            totalTimeTakenp2 += intervalTime;
+          }
+          timer_DOM_update();
+
+          if (totalTimeTakenp1 >= totalTime) {
+            turn = false;
+            clearInterval(y);
+          }
+
+          if (totalTimeTakenp2 >= totalTime) {
+            turn = false;
+            clearInterval(y);
+          }
+        }
+
+        function timer_DOM_update() {
+          p1timer = document.querySelector(".p1 .timer");
+          p2timer = document.querySelector(".p2 .timer");
+
+          p1timer.textContent = msToTime(
+            Math.max(0, totalTime - totalTimeTakenp1)
+          );
+          p2timer.textContent = msToTime(
+            Math.max(0, totalTime - totalTimeTakenp2)
+          );
+          // p1username = document.querySelector(".p1 .username");
+          // p2username = document.querySelector(".p2 .username");
+
+          // p1username.textContent = data.player1;
+          // p2username.textContent = data.player2;
+        }
+
+        let y;
+        function startInterval() {
+          y = setInterval(timer, intervalTime);
+        }
+
+        function flipBoard(e) {
+          e.preventDefault();
+          board.flip();
+          let topclass = topUser.classList[0];
+          let bottomclass = bottomUser.classList[0];
+          console.log(topclass, bottomclass);
+          topUser.classList.remove(topclass);
+          topUser.classList.add(bottomclass);
+
+          bottomUser.classList.remove(bottomclass);
+          bottomUser.classList.add(topclass);
+
+          timer_DOM_update();
+
+          document.querySelector(".p1 .username").textContent = p1username;
+          document.querySelector(".p2 .username").textContent = p2username;
+          // p2username = document.querySelector(".p2 .username");
+        }
+      </script>
+    </div>
+  </body>
+</html>
