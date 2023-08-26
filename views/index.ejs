@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/index.css" />
-    <title>Document</title>
+    <%- include('includes/top') %>
+    <title>Chess</title>
   </head>
   <body>
     
@@ -22,10 +23,11 @@
         
         <% } else { %>
         
-        <h1><%= user.username %></h1>
-        <a type="button" class="btn">Play</a>
-        
+        <h1>Welcome <%= user.username %></h1>
+        <a type="button" class="btn"><i class="fa fa-spinner fa-spin"></i> Play</a>
+        <p class="message"></p>
         <div class="games">
+          <h1>Recent Games played</h1>
           <table>
             <tr>
               <th>Sno.</th>
@@ -37,7 +39,8 @@
 
               <tr>
                 <td><%= i+1 %></td>
-                <td><a href="/play/<%= games[i]._id%>" target="_blank"><%= games[i].player1 %> VS <%= games[i].player2 %></a></td>
+                <td><a href="/play/<%= games[i]._id%>" target="_blank"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i>
+                  <%= games[i].player1 %> VS <%= games[i].player2 %></a></td>
                 <td>
                   <% if(games[i].result=='---' || games[i].result=='Draw'){ %>
                   <%= games[i].result %>
@@ -66,9 +69,20 @@
     </script>
     <script>
       let btn = document.querySelector(".btn");
-
+      let loader=document.querySelector('.btn i');
+      let message=document.querySelector('.message');
+      
       btn.addEventListener("click", (e) => {
         console.log("click");
+        message.style.display='block';
+        message.innerHTML='Searching for players';
+        loader.style.display="inline-block";
+
+        setTimeout(() => {
+          loader.style.display="none";
+          message.style.display="none";
+        message.innerHTML="";
+        }, 3000);
         socket.emit("playrequest");
       });
     </script>

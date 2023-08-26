@@ -6,7 +6,7 @@
     <meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp" />
 
     <title>Chessboard.js Example</title>
-
+    <%- include('includes/top') %>
     <link rel="stylesheet" href="/chessboard.css" />
     <link rel="stylesheet" href="/css/game.css" />
   </head>
@@ -25,19 +25,23 @@
           <h1 class="username">Player 2</h1>
           <h2 class="timer">Timer</h2>
         </div>
-        <div class="moves">
-          <!-- <div class="col1"></div>
-          <div class="col2"></div> -->
+        <button type="button" class="btn flip">Flip</button>
+        <div class="moveTable">
+          <h1>Moves</h1>
+          <div class="moves">
+            <!-- <div class="col1"></div>
+            <div class="col2"></div> -->
+          </div>
         </div>
+
+        <label>Status:</label>
+        <div id="status"></div>
+        <label>FEN:</label>
+        <div id="fen"></div>
+        <label>PGN:</label>
+        <div id="pgn"></div>
       </div>
 
-      <button type="button" class="btn">Flip</button>
-      <label>Status:</label>
-      <div id="status"></div>
-      <label>FEN:</label>
-      <div id="fen"></div>
-      <label>PGN:</label>
-      <div id="pgn"></div>
       <script src="/socket.io/socket.io.js"></script>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       <script src="/chessboard.js"></script>
@@ -94,6 +98,7 @@
         function OpponentMoved({ move, newgame }) {
           console.log(move, newgame);
           turn = true;
+
           console.log("Opponent moved", move);
           let curmove = {
             from: move.from,
@@ -126,8 +131,7 @@
             onDragStart: onDragStart,
             onDrop: onDrop,
             onSnapEnd: onSnapEnd,
-            pieceTheme:
-              "/img/chesspieces/wikipedia/{piece}.png",
+            pieceTheme: "/img/chesspieces/wikipedia/{piece}.png",
             orientation: "black",
           };
           console.log(config);
@@ -243,11 +247,18 @@
         console.log(msToTime(300000));
         function timer() {
           // console.log(totalTimeTakenp1, totalTimeTakenp2);
+          p1timer = document.querySelector(".p1 .timer");
+          p2timer = document.querySelector(".p2 .timer");
+
           if (game.turn() == "w") {
             totalTimeTakenp1 += intervalTime;
+            p1timer.classList.add('curMove');
+            p2timer.classList.remove('curMove');
           }
           if (game.turn() == "b") {
             totalTimeTakenp2 += intervalTime;
+            p2timer.classList.add('curMove');
+            p1timer.classList.remove('curMove');
           }
           timer_DOM_update();
 

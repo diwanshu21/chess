@@ -1,39 +1,80 @@
 .chessBoard {
   width: 100%;
+  max-width: 600px;
+  margin: auto;
+  margin-top: 20px;
   aspect-ratio: 1/1;
-   /*  */
+  /*  */
 }
 .chessBoard #myBoard {
-    width: 100%;
-    aspect-ratio: 1/1;
- /*  */
+  width: 100%;
+  aspect-ratio: 1/1;
+  /*  */
 }
 
 #top,
 #bottom {
-     /*  */
-    width: 100%;
-    padding: 10px 20px;
-display: flex;
-justify-content: space-between;
-}
-
-.moves{
+  /*  */
+  width: 100%;
+  padding: 10px 20px;
   display: flex;
-   /*  */
+  justify-content: space-between;
+  border: 2px solid blue;
+  border-radius: 10px;
+}
+
+.chessBoard .timer{
+  width: 25%;
+  font-size: 20px;
+  text-align: center;
+   padding: 10px 10px;
+  border-radius: 10px;
+  border: 2px solid black;
+}
+
+.chessBoard .username{
+  font-size: 20px;
+  border-radius: 10px;
+  border: 2px solid black;
+  padding: 10px 20px;
+}
+
+.curMove{
+  background-color: rgb(71, 71, 71);
+  color: white;
+}
+
+.moveTable{
+  margin-top: 20px;
 
 }
 
-.moves >*{
-flex:1;
+.flip{
+  font-size: 15px;
+  padding: 2px 10px;
+  margin: 10px 0;
+  background-color: blue;
+  color: white;
+  border: 2px solid blue;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.moves {
+  display: flex;border: 2px solid blue;
+  /*  */
+}
+
+.moves > * {
+  flex: 1;
   flex-direction: column;
   list-style-type: none;
 }
 
-.moves li{
-  background-color: rgb(158, 158, 158);
+.moves li {
+  background-color: rgb(129, 129, 255);
   border: 2px solid black;
-  margin:20px  5px;
+  margin: 5px;
   color: white;
   padding: 10px 10px;
   font-size: 16px;

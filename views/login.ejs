@@ -4,61 +4,87 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/login.css">
-    <title>Document</title>
+    <link rel="stylesheet" href="/css/login.css" />
+    <%- include('includes/top') %>
+
+    <title>Login</title>
   </head>
   <body>
     <div class="container">
       <%- include('includes/header') %>
 
-   
       <form action="">
-      <h1>Login</h1>
-      <div class="form-group">
-        <label for="username">username</label>
-        <input type="text" name="username" />
-      </div>
-      <div class="form-group">
-        <label for="password">password </label>
-        <input type="password" name="password" />
-      </div>
-      <button class="btn"type="submit">Submit</button>
-    </form>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"
-      integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script>
-      let form = document.querySelector("form");
+        <h1>Login</h1>
+        <div class="form-group">
+          <label for="username">username</label>
+          <input type="text" name="username" />
+        </div>
+        <div class="form-group">
+          <label for="password">password </label>
+          <input type="password" name="password" />
+        </div>
+        <p class="message"></p>
+        <button class="btn" type="submit">
+          <i class="fa fa-spinner fa-spin"></i>Submit
+        </button>
+      </form>
+      <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"
+        integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+      ></script>
+      <script>
+        let form = document.querySelector("form");
+        let loader = document.querySelector(".btn i");
+        let message = document.querySelector(".message");
 
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        const formProps = Object.fromEntries(formData);
-        console.log(formProps);
-        // const data=JSON.stringify(formProps)
-        // console.log(data);
-        axios
-          .post("/api/v1/login", formProps, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-          .then((response) => {
-            console.log(response.data);
-            const success = response.data.success;
-            if (success) {
-              location.reload();
-              location.href = "/";
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      });
-    </script>
-     </div>
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const formData = new FormData(e.target);
+          const formProps = Object.fromEntries(formData);
+          console.log(formProps);
+
+          loader.style.display = "inline-block";
+
+          axios
+            .post("/api/v1/login", formProps, {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            })
+            .then((response) => {
+              loader.style.display = "none";
+              console.log(response.data);
+              const success = response.data.success;
+              if (success) {
+                message.innerHTML = "User login successfull";
+                setTimeout(() => {
+                  message.innerHTML = "";
+                }, 2000);
+                location.reload();
+                location.href = "/";
+              }
+              else{
+
+                message.innerHTML = "User login failed";
+                setTimeout(() => {
+                    message.innerHTML = "";
+                  }, 2000);
+              }
+            })
+            .catch((error) => {
+              message.innerHTML = "User login failed";
+              setTimeout(() => {
+                  message.innerHTML = "";
+                }, 2000);
+              // console.error(error);
+              var keys = Object.keys(error);
+              console.log(keys);  
+              loader.style.display = "none";
+            });
+        });
+      </script>
+    </div>
   </body>
 </html>

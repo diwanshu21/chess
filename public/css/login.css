@@ -46,3 +46,12 @@ form .btn{
     margin-left: 35px;
     border: 2px solid black;
 }
+
+.btn i{
+  margin-right: 10px;
+  display: none;
+}
+
+.message{
+    color: red;
+}

@@ -41,11 +41,16 @@ header {
 }
 
 header .logo {
-  width: 50px;
+  width: 60px;
+  aspect-ratio: 1/1;
+  border: 2px solid blue;
+  border-radius: 10px;
+  padding: 5px;
 }
 
 header .logo img {
   width: 100%;
+  object-fit: contain;
 }
 
 header nav ul {
@@ -68,8 +73,8 @@ header nav a {
     <div class="logo">
       <a href="/"
         ><img
-          src="https://cdn4.vectorstock.com/i/1000x1000/01/08/logic-chess-game-logo-simple-style-vector-22940108.jpg"
-          alt="chess logo"
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHcAAAB3CAMAAAAO5y+4AAAAnFBMVEX///9OeDhsnUGUu0htn0Fgjj1MdTc/byNlmTVFcyxLdjSesZVJdTGrxJmXvUhGcy5hly44axhnl0D2+PW1w69RfDnA07KKr2xbiDzp7+RxoEkyZwrG0cFmiFXd5NqCqmKzyqJ4pkN3lGlbgUjT2899p1rf6dmJon6Wq4zX489YkCGlwJCWt32JskZ/mnKdvIZYiTBGfBnK2r+qu6PLCI8JAAAExklEQVRoge2aaXuqPBCGDQYDiLIVBXFrsdal9pz3+P//2xsCCGFJBTOe86HPp1562duZDLPFweBHP/p35O1n28lkdvSeCp3N7ZOtaZp9Om22T0OfbQ0rubB2+ngK+WhrjFegtegFHns+UdLrZUo1fM3Jzgc09tOmmMt0yDS9ZFxXf4PF/qJYPCyUH3JAviCxs8TaYZ2rKIiM4bChVnJy4ufbAeNgpK/BuJ+Uiwvs8HIzV3GRuYLC7m3e3MLL9Ov4iOyAuL80PqhwmauOwAxmT25u7rRsbeLoEYpg8tbRLnGnF6XGJTBpa6vduKVUdZOPrAMINzleer5cgiwJIRMmac1ZHL1eLk3UhGvEINx33MgrzhfpMFwRlnFNEO5cZC9NlFB+Pmsie31qLkwVngm42EX0eK8g3PAkcjPlQiVopf2AE3MRgcEKHE2rEXUzTLqibXObvUkwU24IxB1s7WasOoI0d9CSsnCSMpCBALv3sOGEU2vhug2mY9XTWPEZ1llCYutgFTE54JNKuCi7ODUWGaBOZpqVQit9fhLuGHgk3G94P2f2IrICtXirVQPaT7nIJAcwk8P3hryBcpEYyORJYz1yRznYiCAy1n7RkiQLMNJN6SafT61FQS3AhiN313FciHqNABXSkcTEFWrCFhaPSmDDkefrUEStcJHE+dtbiMEcF0ks/xuhn1XOzzKb6ImwdS7HFbJkNtFN9b44Xr/MlRhWVPNkC5qp4XhNPReRu2zYnye5zr9VXgH17TjXAawuedGIF/Ut3OqqUBihqv4aF77Nodz/fBrAo6dz9yeMXZd2dAWaADexTFkni5W8mURQiytes1v9x2peCgB3wDeV1g04a+uAFgy8+PVKWgvAVsCF+CE469wd+JucPd9Vuk+Zyga1bVLKlVr8GuVVRu+UCzp0M1XcnPca4I6e827Oaz50RO+rQ0PeawAbXDE33ZfBG/ynau6NC5qjvUWlny3NRoYBtjZLbxj4dFVqYMGuRGte5ltYArMGHoSiaR+wzcL1YcXluIhAZK2m3aTKT2QQ6XLTNKoEPBeZsWxwNWHUwyoN6pVUsNeIrYQVk76S+BiH741Y7Na5yIqlRfW+batSCavsjGUtSf+0Dr/VsMqiWs5S+Nx6bVQPq0yOhB9zbJrXdIzbaC6LrkefJ685orKwauUi88EM0pgthGGVgx+yuFb4OHuDdix19QNlsV747gqrVP3L4jfrQUXg5kRW3wTyKdyWKYKwSrk9PV3rWbscL/N0v962pRbc6+a+q0rR9fZd5vbct2yF5mLRw3s74T5jonDHLspVJUXdsWEUuG0X+li5w8nM0d0j66qPkB+olJ32kZiJQd1ig/Sdo7vfKH2ZyQcp2w8CVVXdTKoa+OhOaq9pzSh9vLJ+7aDOP0Hz6tvPPoq65sqdI4XbOWW9ECnczj/ZuepSuJ0DemzJ4XbNWAc53M4b04MkP3flhsSUgDW6j+JhTIzv/7GYSlCfVucldvT+aMNyUN95ZT2OI0c3u8IN0yJRPH5sLtyNv+IoIrplmob4CxiGaVo6caL4a7yUMn576+X18PG2ik0nihwqwom+QF/W49Xbx+G6XEvfcXiJwvVut1wuX3LRv3e7dcjekw380Y866n8hglilkYuj8gAAAABJRU5ErkJggg=="  
+        alt="chess logo"
       /></a>
     </div>
     <nav>
@@ -77,7 +82,7 @@ header nav a {
         <li><a href="/">Home</a></li>
         <li><a href="/login">Login</a></li>
         <li><a href="/register">Register</a></li>
-        <li class="logout"><a>Logout</a></li>
+        <li class="logout"><a href="">Logout</a></li>
       </ul>
     </nav>
   </header>
