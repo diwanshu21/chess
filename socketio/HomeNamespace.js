@@ -9,6 +9,11 @@ dotenv.config();
 
 let playRequest = {};
 const HomeIO = (socket) => {
+
+  socket.on("ping", (callback) => {
+    callback();
+  });
+  
   console.log("Connected to Home page");
   socket.on("playrequest", async () => {
     if (socket.user == null) return;

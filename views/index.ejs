@@ -64,8 +64,27 @@
       var socket = io("/");
       socket.on("startGame", (url) => {
         console.log("startgame");
+        message.style.display='block';
+        message.innerHTML='Player found, Game starting....';
+        loader.style.display="inline-block";
+
+        setTimeout(() => {
+          loader.style.display="none";
+          message.style.display="none";
+        message.innerHTML="";
+        }, 3000);
         location.href = url;
       });
+
+setInterval(() => {
+  const start = Date.now();
+
+  socket.emit("ping", () => {
+    const duration = Date.now() - start;
+    console.log(duration);
+  });
+}, 1000);
+
     </script>
     <script>
       let btn = document.querySelector(".btn");
