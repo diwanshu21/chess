@@ -1,0 +1,28 @@
+# Dependency directories
+node_modules/
+
+# Environment variables file
+.env
+
+# Log files
+*.log
+
+# Debugging files
+.vscode/
+node-debug.log
+
+# Dependency lock files
+package-lock.json
+yarn.lock
+
+# IDE configuration files
+.idea/
+*.suo
+*.user
+*.sln.docstates
+
+# macOS files
+.DS_Store
+
+# Editor backup files
+*~
