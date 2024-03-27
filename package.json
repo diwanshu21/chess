@@ -30,6 +30,5 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "stockfish": "^15.0.0"
   }
 }
